@@ -1,8 +1,8 @@
-# TechStore Backend (Java)
+# TechStore Backend
 
 Backend simples do TechStore, escrito em **Java puro** (sem Spring, sem Maven/Gradle,
-sem bibliotecas de JSON) para deixar a lógica fácil de acompanhar. Usa apenas
-o que já vem dentro do JDK, incluindo o servidor HTTP embutido
+sem bibliotecas de JSON). 
+Mais detalhes da documentação: https://docs.google.com/document/d/1j5WWgimgs508_vjUn12m266oI9SJPUDeTA702Mq0-Jw/edit?usp=sharing
 (`com.sun.net.httpserver.HttpServer`).
 
 ## Como compilar e rodar
@@ -51,18 +51,7 @@ Corpo dos `POST` no formato `application/x-www-form-urlencoded`
 | GET    | `/perfil`               | token, id                                 | dono do id, ou ADMIN      |
 | GET    | `/admin/pedidos`        | token                                     | somente ADMIN             |
 
-### Exemplo de uso (curl)
 
-```bash
-curl -X POST http://localhost:8080/login -d "email=admin@techstore.com&senha=admin123"
-# -> {"token":"...", "role":"ADMIN"}
-
-curl http://localhost:8080/produtos
-
-curl -X POST http://localhost:8080/carrinho/adicionar -d "token=SEU_TOKEN&produtoId=1&quantidade=2"
-
-curl -X POST http://localhost:8080/checkout -d "token=SEU_TOKEN"
-```
 
 ## Como o código se conecta às ameaças da documentação (STRIDE)
 
@@ -75,9 +64,4 @@ curl -X POST http://localhost:8080/checkout -d "token=SEU_TOKEN"
 | **T05 — Denial of Service** | (fora do escopo deste código) | Mitigação real depende de infraestrutura (rate limiting, WAF, CDN) — não é resolvido só na lógica da aplicação. |
 | **T06 — Elevation of Privilege** | `Main.handleCriarProduto`, `Main.handleListarPedidos` | O `role` do usuário vem do banco (a partir do token), nunca de um campo enviado pelo cliente. Rotas administrativas checam `usuarioLogado.isAdmin()` no servidor. |
 
-## Próximos passos possíveis (fora do escopo desta versão simplificada)
 
-- Trocar o `HashMap` em memória por um banco de dados real (ex: PostgreSQL + JDBC).
-- Trocar o token simples por um JWT de verdade, assinado e com expiração.
-- Adicionar rate limiting nas rotas de login e checkout (ajuda a mitigar T01 e T05).
-- Validar formato de CPF/e-mail e complexidade de senha no cadastro.
