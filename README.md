@@ -1,8 +1,10 @@
 # TechStore Backend
 
+Código Java meramente exemplificativo para testes e entendimento da disciplina juntamente 
+com as atividades propostas. 
+
 Backend simples do TechStore, escrito em **Java puro** (sem Spring, sem Maven/Gradle,
-sem bibliotecas de JSON). 
-Mais detalhes da documentação: https://docs.google.com/document/d/1j5WWgimgs508_vjUn12m266oI9SJPUDeTA702Mq0-Jw/edit?usp=sharing
+sem bibliotecas de JSON).
 (`com.sun.net.httpserver.HttpServer`).
 
 ## Como compilar e rodar
