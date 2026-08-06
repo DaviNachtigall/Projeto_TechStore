@@ -48,17 +48,8 @@ O **TechStore** é uma plataforma web voltada para a compra e venda de produtos 
 
 ### Visão Geral da Arquitetura e Fluxo
 
-```
-[ Cliente / App Web ]
-        │
-   (Conexão Segura HTTPS / TLS)
-        │
-        ▼
-[ API Gateway / Servidor Backend ] <────> [ Gateway de Pagamentos Externo ]
-        │
-        ▼
-[ Banco de Dados Relacional ]
-```
+<img width="2100" height="1900" alt="arquitetura-techstore" src="https://github.com/user-attachments/assets/e44dc9e1-04c5-4643-97d9-e36370c5c456" />
+
 
 **Descrição do Fluxo**
 
