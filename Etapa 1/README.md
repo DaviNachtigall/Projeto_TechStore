@@ -11,9 +11,13 @@ Apresenta a identificação do sistema (nome, equipe, repositório e justificati
 Traz a tabela de modelagem de ameaças aplicando o modelo **STRIDE** (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service e Elevation of Privilege) aos componentes do sistema, identificando 6 ameaças (T01–T06) — desde ataques de força bruta no login até elevação de privilégio no painel administrativo — com seus respectivos impactos.
 
 ### [`03-casos-de-abuso.md`](./03-casos-de-abuso.md)
-Detalha dois casos de abuso concretos derivados da modelagem de ameaças:
-- **CA01** — Alteração maliciosa do valor de um produto durante o checkout, via interceptação e adulteração da requisição HTTP.
-- **CA02** — Acesso indevido a dados de outros clientes por meio de uma vulnerabilidade IDOR (*Insecure Direct Object Reference*) na API de perfil de usuário.
+Detalha seis casos de abuso concretos derivados da modelagem de ameaças, um para cada categoria do STRIDE:
+- **CA01** — Alteração maliciosa do valor de um produto durante o checkout (Tampering).
+- **CA02** — Acesso indevido a contas de clientes usando credenciais vazadas de outros sites, também conhecido como *Credential Stuffing* (Spoofing).
+- **CA03** — Negação da autoria de uma compra por falta de registros que comprovem quem a realizou (Repudiation).
+- **CA04** — Acesso indevido a dados de outros clientes por meio de uma vulnerabilidade IDOR (*Insecure Direct Object Reference*) na API de perfil de usuário (Information Disclosure).
+- **CA05** — Sobrecarga da página de pagamento durante um período de alto tráfego, deixando o site fora do ar (Denial of Service).
+- **CA06** — Obtenção indevida de acesso ao painel administrativo por meio da alteração do tipo de usuário na requisição (Elevation of Privilege).
 
 ## Resumo
 
