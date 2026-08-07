@@ -2,42 +2,34 @@
 
 ## Etapa 2: Análise, Priorização e Tratamento de Riscos com o NIST CSF
 
-### Riscos considerados mais importantes
+### Resumo dos Riscos
 
-Os riscos mais críticos identificados foram **R04 (Information Disclosure via IDOR)**, **R06 (Elevation of Privilege)**, **R01 (Spoofing/Credential Stuffing)** e **R02 (Tampering no checkout)**, todos classificados como **Crítico**. Esses riscos compartilham uma característica em comum: decorrem de falhas de **confiança indevida em dados enviados pelo cliente** — seja o ID de um recurso, o papel de um usuário, a identidade de quem se autentica, ou o preço de um produto — em vez de validações realizadas de forma confiável no servidor.
+| Risco | Nível inicial | Estratégia principal | Justificativa |
+| --- | --- | --- | --- |
+| **R01** — Spoofing | Crítico | Reduzir | Login sem MFA facilita invasão de contas com senhas vazadas. |
+| **R02** — Tampering | Crítico | Reduzir | Preço deve ser validado no backend, não confiar no cliente. |
+| **R03** — Repudiation | Alto | Reduzir | Logs auditáveis reduzem o risco, mas não eliminam disputas. |
+| **R04** — Information Disclosure | Crítico | Reduzir | Dados pessoais precisam de controle de acesso rigoroso por usuário. |
+| **R05** — Denial of Service | Alto | Reduzir e Compartilhar | Rate limiting próprio somado a proteção terceirizada (WAF). |
+| **R06** — Elevation of Privilege | Crítico | Reduzir | Papel do usuário deve vir só de token assinado, nunca do cliente. |
 
-### Razões que determinaram a priorização
+### Riscos mais importantes
 
-A priorização considerou principalmente a **abrangência do dano** (quantos usuários/dados são afetados de uma só vez) e a **facilidade de exploração**. Por isso, R04 (IDOR) ficou em primeiro lugar: exige pouquíssimo esforço técnico do atacante e compromete a base de dados completa de clientes. Riscos com impacto mais concentrado ou que dependem de maior capacidade técnica do atacante (como R05, Denial of Service) foram posicionados em níveis de prioridade mais baixos, sem deixar de ser tratados.
+Os riscos **R04, R06, R01 e R02** foram os mais críticos. Todos têm a mesma causa: o sistema confia em dados enviados pelo cliente (ID, papel, senha ou preço) em vez de validar tudo no servidor.
 
-### Estratégias de tratamento predominantes
+### Priorização
 
-Todos os seis riscos foram tratados com a estratégia de **Reduzir**, já que em nenhum caso foi identificada a necessidade de eliminar a funcionalidade afetada (login, checkout, consulta de perfil, painel administrativo) — em todos os casos, existem controles técnicos viáveis que corrigem a causa raiz sem comprometer a experiência legítima do usuário. O risco de Denial of Service (R05) também incorporou, de forma complementar, a estratégia de **Compartilhar**, por meio da contratação de um serviço terceirizado de proteção contra ataques distribuídos.
+A ordem levou em conta principalmente **quantos usuários são afetados** e **quão fácil é explorar a falha**. Por isso R04 (IDOR) ficou em primeiro lugar, e riscos que exigem mais capacidade técnica do atacante, como R05, ficaram por último.
 
-### Funções do NIST mais relevantes para o sistema
+### Estratégias e NIST CSF
 
-As funções **Protect** e **Detect** apareceram na maioria dos riscos, refletindo a necessidade prioritária de implementar salvaguardas técnicas (validações server-side, MFA, rate limiting) e de monitorar tentativas de exploração em tempo real. A função **Govern** foi menos recorrente, mas essencial nos riscos R03 e R06, onde a causa raiz está associada a decisões de design que deveriam ter sido definidas como política técnica desde o início (por exemplo, "o papel do usuário nunca é aceito vindo do cliente").
+Todos os riscos foram tratados com **Reduzir**, pois existem controles técnicos que corrigem a causa sem remover funcionalidades. R05 também usa **Compartilhar**, com um serviço terceirizado de proteção contra DDoS. As funções **Protect** e **Detect** foram as mais usadas, por priorizarem prevenção e monitoramento; **Govern** apareceu nos riscos ligados a decisões de design mal definidas (R03 e R06).
 
-### Controles considerados essenciais
+### Controles essenciais
 
-- Revalidação de preços e permissões **exclusivamente no backend**, nunca confiando em dados enviados pelo cliente.
-- Verificação de posse de recursos (autorização) em todos os endpoints que retornam dados pessoais.
-- Autenticação multifator e limitação de tentativas de login.
-- Registro de logs auditáveis e imutáveis para toda transação financeira.
-- Proteção de infraestrutura (rate limiting e WAF) contra picos de tráfego malicioso.
+- Validar preços, permissões e papéis **sempre no backend**.
+- Checar se o dado pedido pertence ao usuário logado.
+- Autenticação multifator e limite de tentativas de login.
+- Logs auditáveis para toda transação.
+- Proteção contra picos de tráfego (rate limiting e WAF).
 
-### Principais dificuldades encontradas
-
-A principal dificuldade foi **diferenciar risco de ameaça e de ataque** ao transformar os itens da Etapa 1 em eventos de risco mensuráveis, além de justificar de forma consistente valores de probabilidade e impacto que refletissem o contexto real do TechStore, e não apenas uma escolha arbitrária. Também houve dificuldade em decidir o nível de granularidade dos controles propostos, evitando recomendações genéricas.
-
-### Limitações da avaliação
-
-Esta avaliação é uma **estimativa qualitativa**, baseada na arquitetura descrita na Etapa 1 e em cenários hipotéticos de exploração, sem dados reais de produção (como volume real de tentativas de login ou tráfego histórico de checkout). Os valores de probabilidade e impacto poderão ser recalibrados à medida que o sistema for implementado e monitorado. Além disso, os controles propostos ainda não foram implementados nesta etapa, portanto os níveis de risco residual são projeções, não resultados confirmados.
-
-### Pontos que precisarão ser detalhados nas próximas etapas
-
-- Implementação efetiva dos controles propostos e execução dos testes de verificação indicados no plano de tratamento.
-- Definição detalhada da política de retenção de logs (prazo, formato, local de armazenamento) para o controle de R03.
-- Escolha e configuração específica do serviço de WAF/anti-DDoS para R05, incluindo custos e SLAs.
-- Validação formal (por exemplo, via testes de penetração) para confirmar os níveis de risco residual estimados.
-- Revisão periódica da priorização à medida que novos dados de uso real do sistema estiverem disponíveis.
