@@ -54,43 +54,45 @@ Cada um dos 6 casos de abuso da Etapa 1 (um por categoria STRIDE) originou um ri
 
 ---
 
+---
+
 ### 13.5 Justificativas
 
 **R01 — Spoofing (Credential Stuffing)**
-- **Probabilidade (3 — Média-alta):** ataques de *credential stuffing* são automatizados e amplamente disponíveis como serviço (listas de credenciais vazadas são vendidas ou distribuídas publicamente); a ausência de rate limiting e MFA no TechStore torna o ataque plausível em situações comuns de uso, embora dependa de reutilização de senha por parte do usuário.
-- **Impacto (4 — Muito alto):** o comprometimento de uma conta expõe dados pessoais protegidos pela LGPD, permite compras fraudulentas com o método de pagamento salvo e pode afetar um grande número de clientes que reutilizam senhas.
-- **Afetados:** clientes autenticados, dados pessoais, tokens de sessão, meios de pagamento.
-- **Consequências:** fraude financeira, comprometimento de contas, dano à confiança na plataforma.
+- **Probabilidade (3):** ataques automatizados com senhas vazadas são fáceis de executar; falta rate limiting e MFA no sistema.
+- **Impacto (4):** expõe dados pessoais e permite compras fraudulentas, podendo afetar muitos clientes que reutilizam senhas.
+- **Afetados:** contas, dados pessoais, meios de pagamento.
+- **Consequências:** fraude financeira e perda de confiança na plataforma.
 
 **R02 — Tampering (Adulteração de Preço)**
-- **Probabilidade (3 — Média-alta):** a exploração exige apenas um proxy de interceptação (ferramenta gratuita e amplamente conhecida) e não requer acesso privilegiado, tornando o ataque plausível em qualquer sessão de compra.
-- **Impacto (4 — Muito alto):** afeta diretamente a receita da empresa, pode ser repetido em escala e compromete a integridade dos registros financeiros e de estoque.
-- **Afetados:** módulo de precificação, banco de dados de vendas, gateway de pagamento.
-- **Consequências:** prejuízo financeiro direto, inconsistência contábil, possível abuso em massa antes da detecção.
+- **Probabilidade (3):** basta interceptar a requisição do checkout, sem precisar de acesso privilegiado.
+- **Impacto (4):** afeta diretamente a receita e a integridade dos registros de vendas.
+- **Afetados:** precificação, banco de vendas, gateway de pagamento.
+- **Consequências:** prejuízo financeiro direto e inconsistência contábil.
 
 **R03 — Repudiation (Ausência de Logs Auditáveis)**
-- **Probabilidade (3 — Média-alta):** não exige conhecimento técnico avançado, apenas contato com o suporte alegando desconhecimento da compra; plausível em qualquer disputa de cobrança.
-- **Impacto (3 — Alto):** gera prejuízo financeiro via estornos e cria fragilidade jurídica, mas está limitado a transações individuais, sem comprometer a plataforma como um todo.
-- **Afetados:** histórico de pedidos, processo de suporte, relação com adquirente/gateway (chargebacks).
-- **Consequências:** perda financeira recorrente, dificuldade de contestação jurídica, possível abuso sistemático por clientes mal-intencionados.
+- **Probabilidade (3):** basta contatar o suporte negando a compra; não exige conhecimento técnico.
+- **Impacto (3):** gera estornos indevidos, mas afeta transações pontuais, não a plataforma inteira.
+- **Afetados:** histórico de pedidos, suporte, relação com o gateway.
+- **Consequências:** perda financeira recorrente e fragilidade jurídica.
 
 **R04 — Information Disclosure (IDOR)**
-- **Probabilidade (4 — Alta):** a exploração é trivial — basta alterar um número na URL — e pode ser automatizada facilmente para varrer toda a base de usuários, sem necessidade de ferramentas sofisticadas.
-- **Impacto (4 — Muito alto):** compromete a base completa de dados pessoais dos clientes (CPF, endereço, telefone, histórico de compras), configurando violação grave da LGPD com potencial afetação de todos os usuários cadastrados.
-- **Afetados:** banco de dados relacional, API de perfil, todos os clientes cadastrados.
-- **Consequências:** vazamento massivo de PII, sanções regulatórias, dano severo e duradouro à reputação.
+- **Probabilidade (4):** exploração trivial (trocar um número na URL) e fácil de automatizar em massa.
+- **Impacto (4):** compromete os dados de toda a base de clientes, violando a LGPD.
+- **Afetados:** banco de dados, API de perfil, todos os clientes.
+- **Consequências:** vazamento massivo de dados e dano severo à reputação.
 
 **R05 — Denial of Service (Sobrecarga do Checkout)**
-- **Probabilidade (2 — Média-baixa):** exige recursos técnicos um pouco maiores (botnet, ferramentas de flood ou serviços de ataque contratados), o que reduz a frequência esperada do evento em comparação com os demais, embora seja uma condição específica e conhecida (picos de tráfego como Black Friday).
-- **Impacto (4 — Muito alto):** a indisponibilidade durante um período de pico comercial gera perda direta e imediata de receita, além de dano à reputação em um momento de alta visibilidade.
-- **Afetados:** servidor backend, rota de checkout, todos os clientes tentando comprar no período.
-- **Consequências:** queda de vendas, sobrecarga de suporte, possível perda de clientes para concorrentes.
+- **Probabilidade (2):** exige mais recursos técnicos (botnet ou ferramentas de ataque), reduzindo a frequência esperada.
+- **Impacto (4):** indisponibilidade em período de pico gera perda imediata de receita.
+- **Afetados:** servidor backend, checkout, clientes tentando comprar.
+- **Consequências:** queda de vendas e possível perda de clientes.
 
 **R06 — Elevation of Privilege (Manipulação de Role)**
-- **Probabilidade (3 — Média-alta):** a exploração depende de uma falha específica de design (confiar em dado enviado pelo cliente), mas quando presente é de fácil execução via interceptação simples de requisição, tornando-a plausível em situações comuns de uso malicioso.
-- **Impacto (4 — Muito alto):** concede controle total sobre o sistema — alteração de catálogo, exclusão de dados e acesso a informações de todos os clientes — representando o maior nível de comprometimento possível.
-- **Afetados:** painel administrativo, catálogo de produtos, banco de dados completo.
-- **Consequências:** comprometimento total do sistema, fraude em massa, exclusão ou corrupção de dados críticos.
+- **Probabilidade (3):** exige uma falha específica de design, mas é fácil de explorar quando presente.
+- **Impacto (4):** dá controle total do sistema, o maior nível de comprometimento possível.
+- **Afetados:** painel administrativo, catálogo, banco de dados completo.
+- **Consequências:** comprometimento total do sistema e fraude em massa.
 
 ---
 
