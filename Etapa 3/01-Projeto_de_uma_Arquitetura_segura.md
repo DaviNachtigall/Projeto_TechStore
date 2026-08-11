@@ -36,41 +36,35 @@ O uso dessas referências também permite relacionar os riscos identificados pel
 
 As decisões de arquitetura foram definidas considerando os riscos prioritários e os controles propostos anteriormente.
 
-### DA01 — Autorização obrigatória no backend
+## DA01 — Autorização obrigatória no backend
 
-**Risco tratado:** R04 — Information Disclosure (IDOR).
+| Item | Descrição |
+| --- | --- |
+| **Risco tratado** | R04 — Information Disclosure (IDOR) |
+| **Decisão** | Toda solicitação de acesso a informações pessoais, pedidos ou outros recursos pertencentes a usuários deve passar por uma verificação de autorização no backend. |
+| **Motivo** | A interface do sistema não deve ser considerada um mecanismo de segurança. Mesmo que o usuário consiga alterar um identificador na URL ou na requisição, o servidor deve verificar se aquele recurso realmente pertence ao usuário autenticado. |
+| **Componente afetado** | API de backend e camada responsável pela autorização das requisições. |
+| **Resultado esperado** | Impedir que um usuário autenticado consiga acessar dados pertencentes a outras contas por meio da manipulação de identificadores. |
 
-**Decisão:** Toda solicitação de acesso a informações pessoais, pedidos ou outros recursos pertencentes a usuários deverá passar por uma verificação de autorização no backend.
+## DA02 — Controle de privilégios determinado no servidor
 
-**Motivo:** A interface do sistema não deve ser considerada um mecanismo de segurança. Mesmo que o usuário consiga alterar um identificador na URL ou na requisição, o servidor deverá verificar se aquele recurso realmente pertence ao usuário autenticado.
+| Item | Descrição |
+| --- | --- |
+| **Risco tratado** | R06 — Elevation of Privilege |
+| **Decisão** | As permissões do usuário devem ser determinadas por informações confiáveis, mantidas e validadas no servidor. Valores de `role` enviados diretamente pelo cliente não devem ser utilizados para conceder privilégios. |
+| **Motivo** | Informações recebidas do cliente podem ser manipuladas. Alterar `"role": "user"` para `"role": "admin"` em uma requisição não pode resultar na concessão de privilégios administrativos. |
+| **Componente afetado** | Middleware de autenticação e autorização do backend, além das rotas administrativas. |
+| **Resultado esperado** | Impedir que clientes comuns obtenham privilégios administrativos por meio da manipulação das requisições. |
 
-**Componente afetado:** API de backend e camada responsável pela autorização das requisições.
+## DA03 — Revalidação de valores no servidor
 
-**Resultado esperado:** Impedir que um usuário autenticado consiga acessar dados pertencentes a outras contas por meio da manipulação de identificadores.
-
-### DA02 — Controle de privilégios determinado no servidor
-
-**Risco tratado:** R06 — Elevation of Privilege.
-
-**Decisão:** As permissões do usuário deverão ser determinadas por informações confiáveis mantidas e validadas no servidor. Valores de `role` enviados diretamente pelo cliente não deverão ser utilizados para conceder privilégios.
-
-**Motivo:** Informações recebidas do cliente podem ser manipuladas. Portanto, alterar `"role": "user"` para `"role": "admin"` em uma requisição não poderá resultar na concessão de privilégios administrativos.
-
-**Componente afetado:** Middleware de autenticação e autorização do backend, além das rotas administrativas.
-
-**Resultado esperado:** Impedir que clientes comuns obtenham privilégios administrativos por meio da manipulação das requisições.
-
-### DA03 — Revalidação de valores no servidor
-
-**Risco tratado:** R02 — Tampering.
-
-**Decisão:** O backend deverá obter e validar os preços dos produtos a partir de uma fonte confiável antes de calcular o valor final da compra e encaminhá-lo ao gateway de pagamento.
-
-**Motivo:** O preço apresentado ou enviado pela interface do cliente não deve ser considerado confiável. O cliente poderá modificar os parâmetros da requisição, mas essa alteração não poderá modificar o valor real da compra.
-
-**Componente afetado:** Serviço de checkout, regras de negócio, banco de dados de produtos e integração com o gateway de pagamento.
-
-**Resultado esperado:** Impedir que um cliente altere artificialmente o preço de um produto ou o valor total da compra antes da autorização do pagamento.
+| Item | Descrição |
+| --- | --- |
+| **Risco tratado** | R02 — Tampering |
+| **Decisão** | O backend deve obter e validar os preços dos produtos a partir de uma fonte confiável antes de calcular o valor final da compra e encaminhá-lo ao gateway de pagamento. |
+| **Motivo** | O preço apresentado ou enviado pela interface do cliente não deve ser considerado confiável. O cliente pode modificar os parâmetros da requisição, mas essa alteração não pode modificar o valor real da compra. |
+| **Componente afetado** | Serviço de checkout, regras de negócio, banco de dados de produtos e integração com o gateway de pagamento. |
+| **Resultado esperado** | Impedir que um cliente altere artificialmente o preço de um produto ou o valor total da compra antes da autorização do pagamento. |
 
 ## Relação com os Riscos e Controles Anteriores
 
