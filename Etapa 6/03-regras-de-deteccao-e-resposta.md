@@ -141,15 +141,11 @@ Da mesma forma, no R06, o controle de autorização impede que um usuário comum
 
 ### Limitações
 
-As regras apresentadas são propostas conceituais e não constituem um sistema de detecção de intrusões implementado.
+As regras apresentadas são propostas conceituais, não um sistema de detecção implementado. Os limiares de alerta (quantidade de tentativas, intervalo de tempo) precisariam ser ajustados com base no comportamento real da aplicação.
 
-Os limiares exatos para geração dos alertas, como a quantidade de tentativas ou o intervalo de tempo utilizado, deveriam ser definidos e ajustados após a observação do comportamento real da aplicação.
+Alguns comportamentos legítimos podem se assemelhar a maliciosos (ex: várias tentativas de login por senha esquecida). Por isso, um alerta não comprova um ataque por si só e deve ser analisado antes de virar incidente.
 
-Também é possível que determinados comportamentos legítimos sejam semelhantes a comportamentos maliciosos. Por exemplo, um usuário pode realizar várias tentativas de login por ter esquecido sua senha, ou uma aplicação legítima pode realizar várias requisições em sequência.
-
-Por esse motivo, os alertas devem ser analisados antes de serem classificados definitivamente como incidentes. A existência de um alerta não representa, por si só, uma comprovação de ataque.
-
-Além disso, como esta etapa possui caráter conceitual, **não foram utilizados resultados de ferramentas de verificação de vulnerabilidades, como o ZAP, nem foram apresentados logs reais de execução do TechStore**. As regras foram derivadas dos riscos e casos de abuso definidos nas Etapas 1 e 2.
+Por ter caráter conceitual, esta etapa não usou ferramentas de verificação como o ZAP nem logs reais do TechStore — as regras foram derivadas apenas dos riscos e casos de abuso das Etapas 1 e 2.
 
 ---
 
