@@ -4,10 +4,10 @@ Esta pasta contém a documentação da **Etapa 4** do projeto **TechStore**, que
 
 ## Conteúdo
 
-### [`07-codigo-seguro-parte1-autorizacao.md`](./07-codigo-seguro-parte1-autorizacao.md)
+### [`01-codigo-seguro-parte1-autorizacao.md`](./01-codigo-seguro-parte1-autorizacao.md)
 Apresenta o objetivo da etapa, a verificação de conformidade do código Java com as três decisões de arquitetura da Etapa 3 (DA01, DA02, DA03), e a **Prática 1 — Controle de Autorização (Prevenção de IDOR)**: risco e requisito relacionados, testes definidos antes da implementação (TS01 e TS02), o trecho de código responsável pela proteção, o resultado esperado e as referências da OWASP utilizadas.
 
-### [`08-codigo-seguro-parte2-senhas.md`](./08-codigo-seguro-parte2-senhas.md)
+### [`02-codigo-seguro-parte2-senhas.md`](./02-codigo-seguro-parte2-senhas.md)
 Apresenta a **Prática 2 — Armazenamento Seguro de Senhas**: risco e requisito relacionados (incluindo o novo requisito RS04), testes definidos antes da implementação, o problema identificado no código atual (hash sem *salt*), a correção proposta em pseudocódigo, o resultado esperado, as referências da OWASP e as considerações finais da etapa.
 
 ## Resumo
